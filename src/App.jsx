@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FriendsList from './FriendsList';
 import FormAddFriend from './FormAddFriend';
 import Button from './Button';
@@ -26,12 +26,20 @@ import FormSplitBill from './FormSplitBill';
 // ];
 
 function App() {
+  const [showAddFriend, setShowAddFriend] = useState(false);
+
+  const handleShowAddFriend = () => {
+    setShowAddFriend((show) => !show);
+  };
+
   return (
     <div className='app'>
       <div className='sidebar'>
         <FriendsList />
-        <FormAddFriend />
-        <Button>Add friend</Button>
+        {showAddFriend && <FormAddFriend />}
+        <Button onClick={handleShowAddFriend}>
+          {showAddFriend ? 'Close' : 'Add friend'}
+        </Button>
       </div>
       <FormSplitBill />
     </div>
