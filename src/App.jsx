@@ -1,3 +1,4 @@
+/** eslint-disable */
 import React, { useState } from 'react';
 import FriendsList from './FriendsList';
 import FormAddFriend from './FormAddFriend';
@@ -28,6 +29,7 @@ const initialFriends = [
 function App() {
   const [friends, setFriends] = useState(initialFriends);
   const [showAddFriend, setShowAddFriend] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState(null);
 
   const handleShowAddFriend = () => {
     setShowAddFriend((show) => !show);
@@ -38,16 +40,29 @@ function App() {
     setShowAddFriend(false);
   };
 
+  const handleSelection = (friend) => {
+    // setSelectedFriend(friend);
+    setSelectedFriend((curr) => (curr?.id === friend.id ? null : friend));
+    setShowAddFriend(false);
+  };
+
   return (
     <div className='app'>
       <div className='sidebar'>
-        <FriendsList friends={friends} />
+        <FriendsList
+          friends={friends}
+          onSelection={handleSelection}
+          selectedFriend={selectedFriend}
+        />
+
         {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend} />}
+
         <Button onClick={handleShowAddFriend}>
           {showAddFriend ? 'Close' : 'Add friend'}
         </Button>
       </div>
-      <FormSplitBill />
+
+      {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} />}
     </div>
   );
 }
